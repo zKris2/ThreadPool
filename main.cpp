@@ -3,10 +3,6 @@
 
 void func(){
 	std::cout<<"test func ptr"<<std::endl;
-	// while (1)
-	// {
-	// 	/* code */
-	// }
 	std::this_thread::sleep_for(std::chrono::seconds(3));
 }
 
