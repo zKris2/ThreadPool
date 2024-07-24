@@ -10,6 +10,11 @@ extern "C" void test();
 
 int main(int argc,char* argv[]){
 	ThreadPool pool(3);
-	pool.enqueue(test);
+	
+	for (size_t i = 0; i < 100; i++)
+	{
+		pool.enqueue(func);
+	}
+
 	return 0;
 }

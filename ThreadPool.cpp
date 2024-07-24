@@ -1,11 +1,12 @@
 #include "ThreadPool.h"
+#include "utils/util.h"
 
 #include <iostream>
 
 ThreadPool::ThreadPool(size_t nums){
         isStop = false;
 
-        for(size_t i=0;i<nums;i++){
+        for(size_t i = 0; i < nums; i++){
                 _workers.emplace_back(
                         [this]{
                                 for(;;){
@@ -17,9 +18,10 @@ ThreadPool::ThreadPool(size_t nums){
 							return;
 						task = std::move(_tasks.front());
 						_tasks.pop();	
+                                                std::cout << "ThreadId[" << Util::getThreadId() << "]" << std::endl;
 					}
 					if(task)
-						task();
+                                                task();
                                 }
                         });
         }
@@ -37,7 +39,7 @@ ThreadPool::~ThreadPool(){
 }
 
 void ThreadPool::enqueue(FuncPtr func){
-	std::cout<<"new task"<<std::endl;
+	// std::cout<<"new task"<<std::endl;
         {
                 std::unique_lock<std::mutex> lock(_mtx);
 

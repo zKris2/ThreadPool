@@ -1,19 +1,21 @@
-CXX = g++
-CXXFLAGS = -Wall -g -pthread 
+CXX := g++ 
+CXXFLAGS := -Wall -g -pthread
 
-TARGET = ThreadPool
-SOURCES = $(wildcard *.cpp)
-OBJECTS = $(SOURCES:%.cpp=%.o)
+TARGET := ThreadPool
+
+SRCDIRS := . utils
+SOURCES := $(foreach dir,$(SRCDIRS),$(wildcard $(dir)/*.cpp))
+OBJECTS := $(SOURCES:%.cpp=%.o)
 
 all: $(TARGET)
 
 $(TARGET): $(OBJECTS)
-	$(CXX) $(CXXFLAGS) $^ -o $@
+	$(CXX)$(CXXFLAGS) $^ -o $@
 
-%.o:%.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+%.o: %.cpp
+	$(CXX)$(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -rf *.o
+	rm -f $(OBJECTS)
 
 .PHONY: all clean

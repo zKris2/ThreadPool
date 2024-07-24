@@ -15,7 +15,6 @@ class ThreadPool{
                 std::condition_variable _condition;
 
                 bool isStop;
-
         public:
                 ThreadPool(size_t nums);
                 ~ThreadPool();
