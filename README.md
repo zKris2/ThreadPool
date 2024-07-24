@@ -13,6 +13,7 @@ ThreadPool :
 - ThreadPool.cpp 
 - main.cpp 
 - Makefile
+- libfuncs.cpp
 
 ### Procedure
 ```
@@ -45,6 +46,10 @@ int main(){
 ```
 
 ![img](images/1.png)
-
-
 <hr>
+
+### Second version
+Specify tasks using dynamic link libraries
+```
+g++ -shared -fPIC -o libtest.so libfuncs.cpp
+```
