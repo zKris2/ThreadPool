@@ -6,8 +6,10 @@ void func(){
 	std::this_thread::sleep_for(std::chrono::seconds(3));
 }
 
-int main(){
+extern "C" void test(); 
+
+int main(int argc,char* argv[]){
 	ThreadPool pool(3);
-	pool.enqueue(func);
+	pool.enqueue(test);
 	return 0;
 }
