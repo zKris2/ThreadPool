@@ -15,8 +15,12 @@ class ThreadPool{
                 std::condition_variable _condition;
 
                 bool isStop;
+
+                int _thread_num;
+                int _max_thread_num;
         public:
-                ThreadPool(size_t nums);
+                ThreadPool(int nums = 3,int max_thread_num = 10);
                 ~ThreadPool();
 		void enqueue(FuncPtr func);
+                void newWorker();
 };

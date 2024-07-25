@@ -1,5 +1,5 @@
 CXX := g++ 
-CXXFLAGS := -Wall -g -pthread
+CXXFLAGS := -Wall -g -std=c++11 -pthread
 
 TARGET := ThreadPool
 
