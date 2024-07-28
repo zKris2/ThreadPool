@@ -4,13 +4,12 @@
 #include <mutex>
 #include <condition_variable>
 #include <thread>
-
-using FuncPtr = void(*)();
+#include <functional>
 
 class ThreadPool{
         private:
                 std::vector<std::thread> _workers;
-                std::queue<FuncPtr> _tasks;
+                std::queue<std::function<void()>> _tasks;
                 std::mutex _mtx;
                 std::condition_variable _condition;
 
@@ -21,6 +20,23 @@ class ThreadPool{
         public:
                 ThreadPool(int nums = 3,int max_thread_num = 10);
                 ~ThreadPool();
-		void enqueue(FuncPtr func);
+
+                template<typename Func, typename... Args>
+                void enqueue(Func&& func, Args&&... args){
+                        {
+                                std::unique_lock<std::mutex> lock(_mtx);
+                                
+                                if(isStop)
+                                        throw std::runtime_error("enqueue on stopped ThreadPool");
+
+                                if(_workers.size() >= _thread_num && _thread_num < _max_thread_num){
+                                        newWorker();
+                                        _thread_num++;
+                                }
+                                _tasks.push(std::bind(std::forward<Func>(func), std::forward<Args>(args)...));
+                        }
+                        _condition.notify_one();
+                }
+        private:
                 void newWorker();
 };
