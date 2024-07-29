@@ -37,6 +37,24 @@ class ThreadPool{
                         }
                         _condition.notify_one();
                 }
+
+                 // 新的 enqueue 方法，接受 std::function<void()>
+                 template< typename... Args>
+                void enqueue(std::function<void()> task,Args&&... args) {
+                        {
+                                std::unique_lock<std::mutex> lock(_mtx);
+                                
+                                if(isStop)
+                                        throw std::runtime_error("enqueue on stopped ThreadPool");
+
+                                if(_workers.size() >= _thread_num && _thread_num < _max_thread_num){
+                                        newWorker();
+                                        _thread_num++;
+                                }
+                                 _tasks.push(task);  // 将任务添加到队列
+                        }
+                        _condition.notify_one();
+                }
         private:
                 void newWorker();
 };

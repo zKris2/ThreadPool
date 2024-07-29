@@ -42,3 +42,20 @@ void ThreadPool::newWorker(){
                     }
             });
 }
+
+ThreadPool* globalPool = nullptr;
+
+extern "C" void initializeThreadPool() {
+    globalPool = new ThreadPool();
+}
+
+extern "C" void shutdownThreadPool() {
+    delete globalPool;
+    globalPool = nullptr;
+}
+
+extern "C" void enqueueTask(std::function<void()> task) {
+    if (globalPool != nullptr) {
+        globalPool->enqueue(task);
+    }
+}
